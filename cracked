@@ -1,1 +1,67 @@
-social media site
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import MainNavigator from './navigation/MainNavigator';
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <MainNavigator />
+    </NavigationContainer>
+  );
+}import React from 'react';
+import { View, FlatList, Text, StyleSheet } from 'react-native';
+
+const dummyStories = [
+  { id: '1', user: 'Jess', content: 'I just lost someone I loved...' },
+  { id: '2', user: 'Sam', content: 'Today I finally forgave myself.' },
+];
+
+export default function HomeFeed() {
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={dummyStories}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.post}>
+            <Text style={styles.user}>{item.user}</Text>
+            <Text>{item.content}</Text>
+          </View>
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 20 },
+  post: { marginBottom: 15, padding: 10, backgroundColor: '#ffeef0', borderRadius: 8 },
+  user: { fontWeight: 'bold' }
+});const express = require('express');
+const app = express();
+const cors = require('cors');
+
+app.use(cors());
+app.use(express.json());
+
+let posts = [];
+
+app.post('/api/post', (req, res) => {
+  const { user, content } = req.body;
+  const newPost = { id: Date.now(), user, content };
+  posts.push(newPost);
+  res.status(201).json(newPost);
+});
+
+app.get('/api/posts', (req, res) => {
+  res.json(posts);
+});
+
+app.listen(3001, () => {
+  console.log('CRACKED💔 backend running on port 3001');
+});import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+
+export const signUp = async (email, password) => {
+  const auth = getAuth();
+  await createUserWithEmailAndPassword(auth, email, password);
+};
