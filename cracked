@@ -64,4 +64,4 @@ app.listen(3001, () => {
 export const signUp = async (email, password) => {
   const auth = getAuth();
   await createUserWithEmailAndPassword(auth, email, password);
-};
+}; 
